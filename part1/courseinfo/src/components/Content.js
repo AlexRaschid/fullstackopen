@@ -1,3 +1,5 @@
+import Part from "./Part";
+
 const Content = (props) => {
     let part1 = props.part1;
     let part2 = props.part2;
@@ -8,15 +10,9 @@ const Content = (props) => {
     
     return (
       <div>
-        <p>
-            {part1} {exercises1}
-        </p>
-        <p>
-            {part2} {exercises2}
-        </p>
-        <p>
-            {part3} {exercises3}
-        </p>
+        <Part part={part1} exercise={exercises1} />
+        <Part part={part2} exercise={exercises2} />
+        <Part part={part3} exercise={exercises3} />
       </div>
     )
   }
