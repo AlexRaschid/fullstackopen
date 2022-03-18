@@ -5,8 +5,8 @@ import Course from "./components/Course"
 
 const App = () => {
     const course = {
-    name:'Half Stack application development',
-       parts: [    
+        name:'Half Stack application development',
+        parts: [    
             {
                 name: 'Fundamentals of React',
                 exercises: 10
@@ -22,7 +22,7 @@ const App = () => {
         ]
     }
     return (
-      
+       
         <Course course={course} />
       
     )

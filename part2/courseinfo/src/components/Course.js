@@ -5,7 +5,9 @@ import Total from "./Total";
 
 const Course = (props) => {
     let course = props.course;
-
+    let exercisesTotal = course.parts.reduce((totalExercises, currentVal) => {
+        return totalExercises + currentVal.exercises
+    }, 0);
     return(
     <div>
         <Header course={course.name}/>
@@ -15,9 +17,7 @@ const Course = (props) => {
                  exercises1={course.parts[0].exercises}
                  exercises2={course.parts[1].exercises}
                  exercises3={course.parts[2].exercises} />
-        <Total   exercises1={course.parts[0].exercises}
-                 exercises2={course.parts[1].exercises}
-                 exercises3={course.parts[2].exercises}/>
+        <Total   total={exercisesTotal}/>
 
     </div>
         
