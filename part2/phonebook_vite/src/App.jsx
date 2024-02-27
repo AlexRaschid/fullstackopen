@@ -19,6 +19,7 @@ const App = () => {
   const handleSubmitName = (name) =>
   {
     name.preventDefault(); // prevent the default action of submitting HTML forms
+    
 
     let nameArr = newName.split(' ');
     let firstName = nameArr[0];
@@ -30,9 +31,17 @@ const App = () => {
       firstName: lastName
     }
 
-    setPersons(persons.concat(nameObject));
-    setNewName('');
-    
+    //Checks if name is already in persons state
+    const namePresent = (person) => person.name === newName;
+    if(persons.some(namePresent))
+    {
+      alert(`${newName} is already added to phonebook`);
+      return;
+
+    } else {
+      setPersons(persons.concat(nameObject));
+      setNewName('');
+    }
   }
 
   return (
