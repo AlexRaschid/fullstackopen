@@ -1,15 +1,24 @@
 import { useState } from 'react'
+import Person from './components/Person'
 
 const App = () => {
   const [persons, setPersons] = useState
   ([
-    { name: 'Arto Hellas',
-      phone: '040-123456' }
+    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
   ]) 
 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
-  
+  const [newNameFilter, setNewNameFilter] = useState('')
+
+  //Updates newNameFilter state live as user types
+  const handleTypingNameFilter = (input) => 
+  {
+    setNewNameFilter(input.target.value);
+  }
 
   //Updates newName state live as user types
   const handleTypingName = (input) => 
@@ -56,6 +65,11 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
+        <h2>Sort Phonebook Names:</h2>
+        <div>
+          name: <input value={newNameFilter} onChange={handleTypingNameFilter}/>
+        </div>
+        <h2>Add a Name and Number:</h2>
         <div>
           name: <input value={newName} onChange={handleTypingName}/>
         </div>
@@ -71,9 +85,16 @@ const App = () => {
       {/*Displays all names in persons state
         TODO: map persons into a component
       */}
-      {persons.map(person => 
-        <div key={person.name}>{person.name} {person.phone}</div>
-      )}
+
+      {
+        persons.map(person => 
+        {
+          if(person.name.toLowerCase().includes(newNameFilter.toLowerCase()))
+          {
+            return <Person person={person} />
+          }
+        })
+      }
 
       <div>debug: {newName}</div>
     </div>
