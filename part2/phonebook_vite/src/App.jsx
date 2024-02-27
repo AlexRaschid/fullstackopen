@@ -62,10 +62,12 @@ const App = () => {
   }
 
   return (
+    //2.10 TODO: component for the form for adding new people to the phonebook
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
         <h2>Sort Phonebook Names:</h2>
+        {/*2.10 TODO: component for the search filter*/}
         <div>
           name: <input value={newNameFilter} onChange={handleTypingNameFilter}/>
         </div>
@@ -82,13 +84,13 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       
-      {/*Displays all names in persons state
-        TODO: map persons into a component
-      */}
-
+      {/*Displays all names in persons state*/}
       {
+        
+        //2.10 TODO: a component that renders all people from the phonebook, 
         persons.map(person => 
         {
+          //2.10 TODO: component for the search filter
           if(person.name.toLowerCase().includes(newNameFilter.toLowerCase()))
           {
             return <Person person={person} />
