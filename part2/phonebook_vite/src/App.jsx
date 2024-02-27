@@ -3,10 +3,12 @@ import { useState } from 'react'
 const App = () => {
   const [persons, setPersons] = useState
   ([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas',
+      phone: '040-123456' }
   ]) 
 
   const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
   
 
   //Updates newName state live as user types
@@ -15,19 +17,24 @@ const App = () => {
     setNewName(input.target.value);
   }
 
-  //Adds newName to persons state
-  const handleSubmitName = (name) =>
+  //Updates newPhone state live as user types
+  const handleTypingPhone = (input) => 
   {
-    name.preventDefault(); // prevent the default action of submitting HTML forms
-    
+    setNewPhone(input.target.value);
+  }
 
+  //Adds newName to persons state
+  const handleSubmit = (input) =>
+  {
+    input.preventDefault(); // prevent the default action of submitting HTML forms
+    
     let nameArr = newName.split(' ');
     let firstName = nameArr[0];
     let lastName = nameArr[1];
 
-
-    const nameObject = {
+    const personObject = {
       name: newName,
+      phone: newPhone,
       firstName: lastName
     }
 
@@ -39,7 +46,8 @@ const App = () => {
       return;
 
     } else {
-      setPersons(persons.concat(nameObject));
+      //parseName(newName);
+      setPersons(persons.concat(personObject));
       setNewName('');
     }
   }
@@ -47,9 +55,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleSubmitName}>
+      <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={handleTypingName}/>
+        </div>
+        <div>
+          number: <input value={newPhone} onChange={handleTypingPhone}/>
         </div>
         <div>
           <button type="submit">add</button>
@@ -61,7 +72,7 @@ const App = () => {
         TODO: map persons into a component
       */}
       {persons.map(person => 
-      <div key={person.name}>{person.name}</div>
+        <div key={person.name}>{person.name} {person.phone}</div>
       )}
 
       <div>debug: {newName}</div>
