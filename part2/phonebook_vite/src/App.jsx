@@ -58,6 +58,7 @@ const App = () => {
       //parseName(newName);
       setPersons(persons.concat(personObject));
       setNewName('');
+      setNewPhone('');
     }
   }
 
