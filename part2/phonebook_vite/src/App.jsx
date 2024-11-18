@@ -3,6 +3,7 @@ import Person from './components/Person';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import axios from 'axios';
+import PersonsService from './services/PersonsService';
 
 const App = () => {
   /*const [persons, setPersons] = useState
@@ -22,8 +23,7 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    PersonsService.getAll()
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
