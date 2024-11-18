@@ -1,3 +1,4 @@
+import axios from "axios";
 export default function PersonForm({persons, newName, newPhone, setPersons, setNewName, setNewPhone}){
     
     
@@ -41,6 +42,9 @@ export default function PersonForm({persons, newName, newPhone, setPersons, setN
             setPersons(persons.concat(personObject));
             setNewName('');
             setNewPhone('');
+
+            axios.post('http://localhost:3001/persons', persons.concat(personObject))
+
         }
         }
     
