@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import Person from './components/Person'
+import { useState } from 'react';
+import Person from './components/Person';
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
 
 const App = () => {
   const [persons, setPersons] = useState
@@ -14,77 +16,29 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [newNameFilter, setNewNameFilter] = useState('')
 
-  //Updates newNameFilter state live as user types
-  const handleTypingNameFilter = (input) => 
-  {
-    setNewNameFilter(input.target.value);
-  }
-
-  //Updates newName state live as user types
-  const handleTypingName = (input) => 
-  {
-    setNewName(input.target.value);
-  }
-
-  //Updates newPhone state live as user types
-  const handleTypingPhone = (input) => 
-  {
-    setNewPhone(input.target.value);
-  }
-
-  //Adds newName to persons state
-  const handleSubmit = (input) =>
-  {
-    input.preventDefault(); // prevent the default action of submitting HTML forms
-    
-    let nameArr = newName.split(' ');
-    let firstName = nameArr[0];
-    let lastName = nameArr[1];
-
-    const personObject = {
-      name: newName,
-      phone: newPhone,
-      firstName: lastName
-    }
-
-    //Checks if name is already in persons state
-    const namePresent = (person) => person.name === newName;
-    if(persons.some(namePresent))
-    {
-      alert(`${newName} is already added to phonebook`);
-      return;
-
-    } else {
-      //parseName(newName);
-      setPersons(persons.concat(personObject));
-      setNewName('');
-      setNewPhone('');
-    }
-  }
+  //Filter, PersonForm, Persons
 
   return (
     //2.10 TODO: component for the form for adding new people to the phonebook
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <h2>Sort Phonebook Names:</h2>
-        {/*2.10 TODO: component for the search filter*/}
-        <div>
-          name: <input value={newNameFilter} onChange={handleTypingNameFilter}/>
-        </div>
-        <h2>Add a Name and Number:</h2>
-        <div>
-          name: <input value={newName} onChange={handleTypingName}/>
-        </div>
-        <div>
-          number: <input value={newPhone} onChange={handleTypingPhone}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      <h1>Phonebook</h1>
+      <h2>Sort Phonebook Names:</h2>
+        <Filter 
+          newNameFilter={newNameFilter} 
+          setNewNameFilter={setNewNameFilter} 
+        />
+
+
+      <h2>Add a Name and Number:</h2>
+      <PersonForm 
+        persons={persons}
+        setPersons={setPersons}
+        newPhone={newPhone}  
+        newName={newName} 
+        setNewPhone={setNewPhone}
+        setNewName={setNewName}/>
       
+      <h2>Numbers</h2>
       {/*Displays all names in persons state*/}
       {
         
