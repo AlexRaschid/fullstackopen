@@ -46,38 +46,49 @@ const App = () => {
       
       
       //Adds newName to persons state
-      const handleSubmit = (input) =>
-          {
-          input.preventDefault(); // prevent the default action of submitting HTML forms
-          
-          let nameArr = newName.split(' ');
-          let firstName = nameArr[0];
-          let lastName = nameArr[1];
+      const handleSubmit = (input) =>  {
+            input.preventDefault(); // prevent the default action of submitting HTML forms
+            
+            let nameArr = newName.split(' ');
+            let firstName = nameArr[0];
+            let lastName = nameArr[1];
+        
+            const personObject = {
+                name: newName,
+                number: newPhone,
+                firstName: firstName,
+                lastName: lastName,
+                id: (persons.length + 1).toString()
+            }
       
-          const personObject = {
-              name: newName,
-              number: newPhone,
-              firstName: firstName,
-              lastName: lastName,
-              id: (persons.length + 1).toString()
-          }
-      
-          //Checks if name is already in persons state
-          const namePresent = (person) => person.name === newName;
-          if (persons.some(namePresent)) {
-            alert(`${newName} is already added to phonebook`);
-            return;
-          } else {
-            PersonsService.create(personObject)
-              .then(response => {
-                setPersons(persons.concat(response.data));
-                setNewName('');
-                setNewPhone('');
-              })
-              .catch(error => {
-                console.error('There was an error adding the person:', error);
-              });
-          }
+         // Checks if name is already in persons state
+            const existingPerson = persons.find(person => person.name === newName);
+
+            if (existingPerson) {
+              if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+                const updatedPerson = { ...existingPerson, number: newPhone };
+
+                PersonsService.update(existingPerson.id, updatedPerson)
+                  .then(response => {
+                    setPersons(persons.map(person => person.id !== existingPerson.id ? person : response.data));
+                    setNewName('');
+                    setNewPhone('');
+                  })
+                  .catch(error => {
+                    console.error('There was an error updating the person:', error);
+                  });
+              }
+            } else {
+              PersonsService.create(personObject)
+                .then(response => {
+                  setPersons(persons.concat(response.data));
+                  setNewName('');
+                  setNewPhone('');
+                })
+                .catch(error => {
+                  console.error('There was an error adding the person:', error);
+                });
+            }
           }
 
           const handleDeletePerson = (id) => {

@@ -2,7 +2,9 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "123-421-haha number",
+      "firstName": "Arto",
+      "lastName": "Hellas",
       "id": "1"
     },
     {
