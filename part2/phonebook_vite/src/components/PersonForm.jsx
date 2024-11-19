@@ -1,5 +1,11 @@
 import axios from "axios";
-export default function PersonForm({persons, newName, newPhone, setPersons, setNewName, setNewPhone}){
+export default function PersonForm({
+  persons, 
+  newName, 
+  newPhone, 
+  setPersons, 
+  setNewName, 
+  setNewPhone}){
     
     
     //Updates newName state live as user types
@@ -26,8 +32,10 @@ export default function PersonForm({persons, newName, newPhone, setPersons, setN
     
         const personObject = {
             name: newName,
-            phone: newPhone,
-            firstName: lastName
+            number: newPhone,
+            firstName: firstName,
+            lastName: lastName,
+            id: (persons.length + 1).toString()
         }
     
         //Checks if name is already in persons state
@@ -43,7 +51,7 @@ export default function PersonForm({persons, newName, newPhone, setPersons, setN
             setNewName('');
             setNewPhone('');
 
-            axios.post('http://localhost:3001/persons', persons.concat(personObject))
+            axios.post('http://localhost:3001/persons', personObject)
 
         }
         }
