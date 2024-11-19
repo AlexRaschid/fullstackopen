@@ -16,29 +16,10 @@
       "id": "3"
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "5",
-      "name": "12w33 12",
-      "number": "3 sad ",
-      "firstName": "12w33",
-      "lastName": "12"
-    },
-    {
-      "id": "6",
-      "name": "asd sd",
-      "number": " d2d2 ",
-      "firstName": "asd",
-      "lastName": "sd"
-    },
-    {
-      "id": "7",
-      "name": "assadasd",
-      "number": "asdasdasd",
-      "firstName": "assadasd"
+      "id": "4",
+      "name": "aaaa",
+      "number": "123123123",
+      "firstName": "aaaa"
     }
   ]
 }

@@ -64,20 +64,31 @@ const App = () => {
       
           //Checks if name is already in persons state
           const namePresent = (person) => person.name === newName;
-          if(persons.some(namePresent))
-          {
-              alert(`${newName} is already added to phonebook`);
-              return;
-      
+          if (persons.some(namePresent)) {
+            alert(`${newName} is already added to phonebook`);
+            return;
           } else {
-              //parseName(newName);
-              setPersons(persons.concat(personObject));
-              setNewName('');
-              setNewPhone('');
-  
-              axios.post('http://localhost:3001/persons', personObject)
-  
+            PersonsService.create(personObject)
+              .then(response => {
+                setPersons(persons.concat(response.data));
+                setNewName('');
+                setNewPhone('');
+              })
+              .catch(error => {
+                console.error('There was an error adding the person:', error);
+              });
           }
+          }
+
+          const handleDeletePerson = (id) => {
+            PersonsService.deleteService(id)
+            .then(response => {
+              setPersons(persons.filter(person => person.id !== id));//filter out the person with the id
+            })
+            .catch(error => {
+              console.error('There was an error deleting the person:', error);
+            });
+            
           }
       
 
@@ -116,7 +127,12 @@ const App = () => {
           if(person.name.toLowerCase().includes(newNameFilter.toLowerCase()))
           {
             //console.log(person);
-            return <Person key={person.id} personName={person.name}  personPhone={person.number}/>
+            return <Person key={person.id} 
+                    personId={person.id} 
+                    personName={person.name}  
+                    personPhone={person.number}
+                    deletePerson={handleDeletePerson}
+            />
           }
         })
       }
