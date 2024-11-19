@@ -61,7 +61,7 @@ const App = () => {
           //2.10 TODO: component for the search filter
           if(person.name.toLowerCase().includes(newNameFilter.toLowerCase()))
           {
-            return <Person person={person} />
+            return <Person key={person.id} person={person} />
           }
         })
       }
