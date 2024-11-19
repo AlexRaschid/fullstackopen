@@ -1,6 +1,6 @@
-const Person = ({ person }) => {
+const Person = (props) => {
     return (
-      <li>{person.name} {person.phone}</li>
+      <li>{props.personName} {props.personPhone}</li>
     )
   }
   
