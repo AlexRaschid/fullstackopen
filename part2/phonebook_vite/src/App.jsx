@@ -4,6 +4,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import axios from 'axios';
 import PersonsService from './services/PersonsService';
+import Notification from './components/Notification';
 
 const App = () => {
   /*const [persons, setPersons] = useState
@@ -19,7 +20,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newNameFilter, setNewNameFilter] = useState('')
-
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -73,6 +74,12 @@ const App = () => {
                     setPersons(persons.map(person => person.id !== existingPerson.id ? person : response.data));
                     setNewName('');
                     setNewPhone('');
+                    setSuccessMessage(
+                      `Success: '${updatedPerson.number}' is '${updatedPerson.name}''s new number!`
+                    )
+                    setTimeout(() => {
+                      setSuccessMessage(null)
+                    }, 5000)
                   })
                   .catch(error => {
                     console.error('There was an error updating the person:', error);
@@ -84,6 +91,12 @@ const App = () => {
                   setPersons(persons.concat(response.data));
                   setNewName('');
                   setNewPhone('');
+                  setSuccessMessage(
+                    `Success: '${personObject.name}' added to the phonebook! Their number is '${personObject.number}'`
+                  )
+                  setTimeout(() => {
+                    setSuccessMessage(null)
+                  }, 5000)
                 })
                 .catch(error => {
                   console.error('There was an error adding the person:', error);
@@ -95,6 +108,15 @@ const App = () => {
             PersonsService.deleteService(id)
             .then(response => {
               setPersons(persons.filter(person => person.id !== id));//filter out the person with the id
+              console.log()
+              setSuccessMessage(
+                `Success: Deleted '${response.data.name}' from phonebook!`
+              )
+              setTimeout(() => {
+                setSuccessMessage(null)
+              }, 5000)
+              
+
             })
             .catch(error => {
               console.error('There was an error deleting the person:', error);
@@ -108,6 +130,7 @@ const App = () => {
     //2.10 TODO: component for the form for adding new people to the phonebook
     <div>
       <h1>Phonebook</h1>
+      <Notification message={successMessage} />
       <h2>Sort Phonebook Names:</h2>
         <Filter 
           newNameFilter={newNameFilter} 
