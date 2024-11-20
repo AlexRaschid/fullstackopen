@@ -21,6 +21,8 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [newNameFilter, setNewNameFilter] = useState('')
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
 
   useEffect(() => {
     console.log('effect')
@@ -106,21 +108,24 @@ const App = () => {
 
           const handleDeletePerson = (id) => {
             PersonsService.deleteService(id)
-            .then(response => {
-              setPersons(persons.filter(person => person.id !== id));//filter out the person with the id
-              console.log()
-              setSuccessMessage(
-                `Success: Deleted '${response.data.name}' from phonebook!`
-              )
-              setTimeout(() => {
-                setSuccessMessage(null)
-              }, 5000)
-              
-
-            })
-            .catch(error => {
-              console.error('There was an error deleting the person:', error);
-            });
+              .then(response => {
+                setPersons(persons.filter(person => person.id !== id));
+                setSuccessMessage(`Success: Deleted person from phonebook!`);
+                setTimeout(() => {
+                  setSuccessMessage(null);
+                }, 5000);
+              })
+              .catch(error => {
+                if (error.response && error.response.status === 404) {
+                  setErrorMessage(`Error: This person has already been deleted.`);
+                  setPersons(persons.filter(person => person.id !== id));
+                } else {
+                  setErrorMessage(`Error: There was an error deleting the person.`);
+                }
+                setTimeout(() => {
+                  setErrorMessage(null);
+                }, 5000);
+              });
             
           }
       
@@ -130,7 +135,8 @@ const App = () => {
     //2.10 TODO: component for the form for adding new people to the phonebook
     <div>
       <h1>Phonebook</h1>
-      <Notification message={successMessage} />
+      <Notification messageError={errorMessage}
+                    messageSuccess={successMessage} />
       <h2>Sort Phonebook Names:</h2>
         <Filter 
           newNameFilter={newNameFilter} 
