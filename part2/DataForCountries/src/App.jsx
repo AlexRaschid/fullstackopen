@@ -112,7 +112,7 @@ function App() {
         </div>
       );
     }
-  }, [selectedCountry]);
+  }, [selectedCountry, weatherArr]);
 
   const handleSearchInput = (event) => {
     setSearchInput(event.target.value);
