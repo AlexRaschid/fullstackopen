@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 import restCountries from './services/restCountries'
+import OpenWeatherMap from './services/OpenWeatherMap';
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     // State for storing the content to be displayed
     const [content, setContent] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState(null);
+    const [weatherArr, setWeatherArr] = useState(null);
 
   useEffect(() => {
     console.log('effect')
@@ -23,11 +25,32 @@ function App() {
   useEffect(() => {
     // Reset selected country when search changes
     setSelectedCountry(null);
+    setWeatherArr([]);
 
     const filteredCountries = countries.filter(country =>
       country.name.common.toLowerCase().includes(searchInput.toLowerCase())
     );
   
+    if (filteredCountries.length > 0 && filteredCountries.length <= 10) {
+      // Fetch weather data for each filtered country and store in weatherArr
+      const fetchWeatherData = async () => {
+        const weatherDataPromises = filteredCountries.map(country =>
+          OpenWeatherMap.getWeather(country.latlng[0], country.latlng[1])
+            .then(response => ({
+              country: country.name.common,
+              weather: response.data
+            }))
+        );
+
+        const weatherData = await Promise.all(weatherDataPromises);
+        setWeatherArr(weatherData);
+      };
+
+      fetchWeatherData();
+    }
+
+
+
     switch (true) {
       case searchInput === '':
         setContent(<p>Enter a search term</p>);
@@ -56,6 +79,8 @@ function App() {
   // Render country details when a country is selected
   useEffect(() => {
     if (selectedCountry) {
+      const weatherData = weatherArr.find(w => w.country === selectedCountry.name.common);
+
       setContent(
         <div className='countryResult' key={selectedCountry.cca3}>
           <h2>{selectedCountry.name.common}</h2>
@@ -72,16 +97,30 @@ function App() {
             alt={`Flag of ${selectedCountry.name.common}`} 
             width="150" 
           />
+          {weatherData && (
+            <>
+              <h3>Weather in {selectedCountry.capital}</h3>
+              <p>Temperature: {weatherData.weather.main.temp} Celsius</p>
+              <img 
+                src={`http://openweathermap.org/img/wn/${weatherData.weather.weather[0].icon}.png`} 
+                alt="Weather icon" 
+              />
+              <p>Wind: {weatherData.weather.wind.speed} m/s</p>
+              
+            </>
+          )}
         </div>
       );
     }
   }, [selectedCountry]);
 
-  console.log(countries);
   const handleSearchInput = (event) => {
     setSearchInput(event.target.value);
   }
   
+
+  //console.log(`weatherArr: ${weatherArr}`);
+
   return (<>
     <div>
       find countries: <input value={searchInput} onChange={handleSearchInput}/>
