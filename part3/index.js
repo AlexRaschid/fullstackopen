@@ -51,9 +51,22 @@ app.get('/', (request, response) => {
 
   app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    phonebook = phonebook.filter(note => note.id !== id)
-  
-    response.status(204).end()
+    const person = phonebook.find(person => person.id === id)
+
+    /*
+        Ik course says "For the sake of simplicity, our application will respond with 204 in both cases."
+        But I think it is better to return 404 if the person is not found
+        After here ill continue to use 202 as the course says    
+    */
+    if (person){
+        phonebook = phonebook.filter(note => note.id !== id)
+        console.log(`successfully deleted ${id}`)
+        response.status(204).end()
+    } else {
+        console.log(`Person id: ${id} is not found, try again`)
+        response.status(404).end()
+    }
+    //console.log(id)
   })
 
 
