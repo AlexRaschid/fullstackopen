@@ -79,22 +79,22 @@ app.get('/', (request, response) => {
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
+    
+    if (!body.name || !body.number) {
+        return response.status(404).json({ 
+          error: 'name or number missing' 
+        });
+      }
   
-    if (!body.content) {
-      return response.status(400).json({ 
-        error: 'content missing' 
-      })
-    }
-  
-    const note = {
-      content: body.content,
-      important: Boolean(body.important) || false,
+    const person = {
+      name: body.name,
+      number: body.number,
       id: generateId(),
     }
   
-    phonebook = phonebook.concat(note)
+    phonebook = phonebook.concat(person)
   
-    response.json(note)
+    response.json(person)
   })
 
  const PORT = 3001
