@@ -26,8 +26,12 @@ let phonebook = [
     }
 ]
 
- app.get('/', (request, response) => {
+app.get('/', (request, response) => {
     response.send('<h1>Hello World</h1>');
+ });
+
+ app.get('/info', (request, response) => {
+    response.send(`<p>Phonebook has info for ${phonebook.length} people <br/> ${new Date()} </p>`);
  });
 
  app.get('/api/persons', (req, res) => {
