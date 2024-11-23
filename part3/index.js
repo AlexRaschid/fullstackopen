@@ -40,11 +40,10 @@ app.get('/', (request, response) => {
 
  app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    const note = phonebook.find(note => note.id === id)
-    response.json(note)
+    const person = phonebook.find(person => person.id === id)
 
-    if (note) {
-        response.json(note)
+    if (person) {
+        response.json(person)
     } else {
         response.status(404).end()
     }
