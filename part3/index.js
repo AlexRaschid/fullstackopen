@@ -2,8 +2,11 @@ const express = require('express')
 const app = express()
 var morgan = require('morgan')
 
+morgan.token('POST-body', (req) => JSON.stringify(req.body));
+const formatString = ':method :url :status :res[content-length] - :response-time ms :POST-body';
 
-app.use(morgan('tiny'))
+app.use(morgan(formatString));
+//app.use(morgan('tiny'))
 app.use(express.json())
 
 let phonebook = [
